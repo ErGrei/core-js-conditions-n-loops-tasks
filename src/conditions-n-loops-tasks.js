@@ -299,8 +299,21 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let sum = 0;
+  let left = 0;
+  for (let i = 0; i < arr.length; i += 1) {
+    sum += arr[i];
+  }
+  let right = sum;
+  for (let i = 0; i < arr.length; i += 1) {
+    right -= arr[i];
+    if (right === left) {
+      return i;
+    }
+    left += arr[i];
+  }
+  return -1;
 }
 
 /**
@@ -324,8 +337,45 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const arr = [];
+  for (let i = 0; i < size; i += 1) {
+    arr[i] = new Array(size);
+  }
+
+  let counter = 1;
+  let row = 0;
+  let column = 0;
+  let endRow = size;
+  let endColumn = size;
+
+  while (row < endRow && column < endColumn) {
+    for (let i = column; i < endColumn; i += 1) {
+      arr[row][i] = counter;
+      counter += 1;
+    }
+    row += 1;
+
+    for (let i = row; i < endRow; i += 1) {
+      arr[i][endColumn - 1] = counter;
+      counter += 1;
+    }
+    endColumn -= 1;
+
+    for (let i = endColumn - 1; i >= column; i -= 1) {
+      arr[endRow - 1][i] = counter;
+      counter += 1;
+    }
+    endRow -= 1;
+
+    for (let i = endRow; i > row; i -= 1) {
+      arr[i - 1][column] = counter;
+      counter += 1;
+    }
+    column += 1;
+  }
+
+  return arr;
 }
 
 /**
@@ -343,8 +393,21 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const newMatrix = [];
+  const result = matrix;
+  for (let i = 0; i < matrix.length; i += 1) {
+    newMatrix[i] = [];
+    for (let j = 0; j < matrix[i].length; j += 1) {
+      newMatrix[i][j] = matrix[i][j];
+    }
+  }
+  for (let i = 0; i < matrix[0].length; i += 1) {
+    for (let j = 0; j < matrix.length; j += 1) {
+      result[i][j] = newMatrix[matrix.length - 1 - j][i];
+    }
+  }
+  return result;
 }
 
 /**
