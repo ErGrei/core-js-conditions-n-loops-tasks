@@ -445,10 +445,35 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = str;
+  let oddChars = '';
+  let evenChars = '';
+  let count = 0;
+  for (let j = 0; j < iterations; j += 1) {
+    for (let i = 1; i < str.length; i += 2) {
+      evenChars += result[i];
+      oddChars += result[i - 1];
+    }
+    if (str.length % 2 !== 0) oddChars += result[str.length - 1];
+    result = oddChars + evenChars;
+    oddChars = '';
+    evenChars = '';
+    count += 1;
+    if (result === str) break;
+  }
+  for (let j = 0; j < iterations % count; j += 1) {
+    for (let i = 1; i < str.length; i += 2) {
+      evenChars += result[i];
+      oddChars += result[i - 1];
+    }
+    if (str.length % 2 !== 0) oddChars += result[str.length - 1];
+    result = oddChars + evenChars;
+    oddChars = '';
+    evenChars = '';
+  }
+  return result;
 }
-
 /**
  * Returns the nearest largest integer consisting of the digits of the given positive integer.
  * If there is no such number, it returns the original number.
@@ -466,8 +491,36 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const digitsArray = Array.from(String(number));
+  let i = digitsArray.length - 2;
+
+  while (i >= 0 && digitsArray[i] >= digitsArray[i + 1]) {
+    i -= 1;
+  }
+
+  let nextIndex = i + 1;
+
+  for (let j = i + 2; j < digitsArray.length; j += 1) {
+    if (
+      digitsArray[j] > digitsArray[i] &&
+      digitsArray[j] < digitsArray[nextIndex]
+    ) {
+      nextIndex = j;
+    }
+  }
+
+  [digitsArray[i], digitsArray[nextIndex]] = [
+    digitsArray[nextIndex],
+    digitsArray[i],
+  ];
+
+  const sortedRightPart = digitsArray
+    .splice(i + 1)
+    .sort((a, b) => a - b)
+    .join('');
+
+  return Number(digitsArray.join('') + sortedRightPart);
 }
 
 module.exports = {
